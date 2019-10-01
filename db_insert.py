@@ -13,12 +13,12 @@ with open('input.csv', 'r') as csvfile:
         if len(r) > 0:
             numbers.append((r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7]))
 
-            print(f'Inserting {len(numbers)} records')
-            c.executemany('INSERT INTO numbers VALUES (?,?,?,?,?,?,?,?)', numbers)
-            conn.commit()
-            print("Records created successfully")
+print(f'Inserting {len(numbers)} records')
+c.executemany('INSERT INTO numbers VALUES (?,?,?,?,?,?,?,?)', numbers)
+conn.commit()
+print("Records created successfully")
 
-# Export all entries to csv
+# Output all records for redirection to csv
 # c.execute('SELECT * FROM numbers ORDER BY date')
 # for r in c.fetchall():
 #     print(f'{r[0]},{r[1]},{r[2]},{r[3]},{r[4]},{r[5]},{r[6]},{r[7]}')
