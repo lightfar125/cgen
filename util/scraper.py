@@ -1,7 +1,7 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
-years = ['2019','2018','2017','2016','2015','2014','2013']
+years = ['2019', '2018', '2017', '2016', '2015', '2014', '2013']
 
 for year in years:
     quote_page = f'https://www.lotteryleaf.com/on/lotto-649/{year}'
