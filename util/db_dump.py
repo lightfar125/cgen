@@ -1,3 +1,6 @@
+# Script to dump contents of database into csv file for
+# processing with numpy
+
 import sqlite3
 
 conn = sqlite3.connect('ontario649.db')

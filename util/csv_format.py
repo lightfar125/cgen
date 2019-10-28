@@ -1,3 +1,5 @@
+# Script to process a found csv file into the needed format
+
 import csv
 from datetime import date
 

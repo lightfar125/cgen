@@ -1,3 +1,5 @@
+# Script to scrape winning lotto numbers off lotteryleaf.com
+
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 

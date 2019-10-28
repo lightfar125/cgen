@@ -1,3 +1,5 @@
+# Script to setup the database + table
+
 import sqlite3
 
 conn = sqlite3.connect('ontario649.db')

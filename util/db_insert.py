@@ -1,3 +1,5 @@
+# Script for inserting data into database
+
 import sqlite3
 import csv
 

@@ -1,3 +1,8 @@
+# WIP: This is not complete
+#
+# A script to train a model on previous winning lotto numbers
+# and attempt use that model to predict future winning numbers
+
 from numpy import loadtxt
 
 from keras.models import Sequential
