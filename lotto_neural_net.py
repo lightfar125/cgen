@@ -10,7 +10,7 @@ from keras.layers import Dense
 from keras.optimizers import SGD
 
 # load the dataset
-dataset = loadtxt('numbers.csv', delimiter=',')
+dataset = loadtxt('numbers_raw.csv', delimiter=',')
 
 # split into input (X) and output (y) variables
 X = dataset[:, 0:3]  # inputs: year, month, day

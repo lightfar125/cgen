@@ -9,13 +9,12 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.metrics import accuracy_score
 
-df = pd.read_csv('numbers.csv')
+df = pd.read_csv('data/numbers.csv', header=None)
 
-data_cols = ['year', 'month', 'day']
-target_cols = ['num1', 'num2', 'num3', 'num4', 'num5', 'num6']
+X = df[[x for x in range(3)]]
+y = df[[x for x in range(3, 52)]]
 
-X = df[data_cols]
-y = df[target_cols]
+X = pd.get_dummies(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
