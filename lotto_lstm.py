@@ -40,4 +40,4 @@ model.fit(X_train, y_train, batch_size=450, epochs=3, validation_split=0.05)
 predicted = model.predict(X_test)
 rmse = np.sqrt(((predicted - y_test) ** 2).mean(axis=0))
 
-print(np.around(rmse))
+print(f"\nPredicted numbers: {np.around(rmse)}")
