@@ -1,41 +1,43 @@
-# WIP: This is not complete
-#
-# A script to train a model on previous winning lotto numbers
-# and attempt use that model to predict future winning numbers
-
-from numpy import loadtxt
-
+import numpy as np
+from pandas import read_csv
 from keras.models import Sequential
-from keras.layers import Dense
-from keras.optimizers import SGD
+from keras.layers.core import Dense
+from keras.layers.recurrent import LSTM
+
+path = 'data/ontario649.csv'
+COLS = [0, 1, 2, 3, 4, 5, 6]
 
 # load the dataset
-dataset = loadtxt('numbers_raw.csv', delimiter=',')
+data = read_csv(path, header=0, index_col=0, usecols=COLS)
 
-# split into input (X) and output (y) variables
-X = dataset[:, 0:3]  # inputs: year, month, day
-y = dataset[:, 3:9]  # outputs: 6 numbers, excluding bonus
 
-# split into train and test
-n_train = int(len(X) / 2)
-trainX, testX = X[:n_train, :], X[n_train:, :]
-trainy, testy = y[:n_train], y[n_train:]
+def _load_data(df, n_prev=100):
+    docX, docY = [], []
+    for i in range(len(df) - n_prev):
+        docX.append(df.iloc[i:i + n_prev].values)
+        docY.append(df.iloc[i + n_prev].values)
+    alsX = np.array(docX)
+    alsY = np.array(docY)
+    return alsX, alsY
 
-# define the model
+
+def train_test_split(df, test_size=0.1):
+    num_train = round(len(df) * (1 - test_size))
+    X_train, y_train = _load_data(df.iloc[0:num_train])
+    X_test, y_test = _load_data(df.iloc[num_train:])
+    return X_train, y_train, X_test, y_test
+
+
 model = Sequential()
-model.add(Dense(7, input_dim=3, activation='relu', kernel_initializer='he_uniform'))
-model.add(Dense(7, activation='relu'))
-model.add(Dense(6, activation='softmax'))
+model.add(LSTM(49, input_shape=(None, 6)))
+model.add(Dense(6, input_dim=49))
+model.compile(loss="mse", optimizer="adam")
 
-opt = SGD(lr=0.01, momentum=0.9)
+X_train, y_train, X_test, y_test = train_test_split(data)
 
-# use categorical_crossentropy for multi-output problems
-model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
+model.fit(X_train, y_train, batch_size=450, epochs=3, validation_split=0.05)
 
-# fit model
-model.fit(trainX, trainy, validation_data=(testX, testy), epochs=100, verbose=0)
+predicted = model.predict(X_test)
+rmse = np.sqrt(((predicted - y_test) ** 2).mean(axis=0))
 
-# evaluate the model
-_, train_acc = model.evaluate(trainX, trainy, verbose=0)
-_, test_acc = model.evaluate(testX, testy, verbose=0)
-print('Train: %.3f, Test: %.3f' % (train_acc, test_acc))
+print(np.around(rmse))
