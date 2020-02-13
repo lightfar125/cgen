@@ -4,7 +4,7 @@ from keras.models import Sequential
 from keras.layers.core import Dense
 from keras.layers.recurrent import LSTM
 
-path = 'data/ontario649.csv'
+path = 'data/2020.csv'
 COLS = [0, 1, 2, 3, 4, 5, 6]
 
 # load the dataset
